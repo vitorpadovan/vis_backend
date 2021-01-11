@@ -1,17 +1,25 @@
 package com.br.vis.app.model;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.sun.istack.NotNull;
 
 @Entity
-public class CadaOper {
+public class CadaOper implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,6 +55,10 @@ public class CadaOper {
 	@NotNull
 	@Column(name = "operOperBloq", columnDefinition = "boolean not null default false comment 'Operador bloqueado'")
 	private Boolean operOperBloq;
+	
+	@ManyToMany()
+	@JoinTable(name = "JTDireOper", joinColumns = @JoinColumn(name = "operCodiOper"), inverseJoinColumns = @JoinColumn(name = "direCodiDire"))
+	private List<DireOper> direitos;
 
 	public CadaOper() {
 		super();
@@ -214,5 +226,44 @@ public class CadaOper {
 				+ operLogiOper + ", operSenhOper=" + operSenhOper + ", operDataCada=" + operDataCada + ", operDataAtua="
 				+ operDataAtua + ", operDataExpi=" + operDataExpi + ", operOperAtiv=" + operOperAtiv + ", operOperBloq="
 				+ operOperBloq + "]";
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return this.direitos;
+	}
+
+	@Override
+	public String getPassword() {
+		return this.operSenhOper;
+	}
+
+	@Override
+	public String getUsername() {
+		return this.operLogiOper;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		if(this.operDataExpi == null) {
+			return true;
+		}
+		//TODO implementar regra correta para expirar o usuário
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return !operOperBloq;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return operOperAtiv;
 	}
 }
