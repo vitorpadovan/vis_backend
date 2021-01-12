@@ -1,4 +1,4 @@
-package com.br.vis.app;
+package com.br.vis.app.service;
 
 import java.util.Optional;
 
@@ -20,7 +20,7 @@ public class ServiceCadaOper implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Optional<CadaOper> operador = repo.getUsuarioPorLogin(username);
-		if(operador.isPresent()) {
+		if(!operador.isPresent()) {
 			throw new UsernameNotFoundException(username);
 		}
 		return operador.get();
