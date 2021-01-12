@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -56,8 +57,10 @@ public class CadaOper implements UserDetails {
 	@Column(name = "operOperBloq", columnDefinition = "boolean not null default false comment 'Operador bloqueado'")
 	private Boolean operOperBloq;
 	
-	@ManyToMany()
-	@JoinTable(name = "JTDireOper", joinColumns = @JoinColumn(name = "operCodiOper"), inverseJoinColumns = @JoinColumn(name = "direCodiDire"))
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "JTDireOper",
+	joinColumns = @JoinColumn(name = "operCodiOper"),
+	inverseJoinColumns = @JoinColumn(name = "direCodiDire"))
 	private List<DireOper> direitos;
 
 	public CadaOper() {
