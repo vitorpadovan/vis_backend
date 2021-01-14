@@ -3,6 +3,7 @@ package com.br.vis.app.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,5 +25,14 @@ public class ServiceCadaOper implements UserDetailsService{
 			throw new UsernameNotFoundException(username);
 		}
 		return operador.get();
+	}
+	
+	public static CadaOper authenticated() {
+		try {
+			return (CadaOper) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		}
+		catch (Exception e) {
+			return null;
+		}
 	}
 }

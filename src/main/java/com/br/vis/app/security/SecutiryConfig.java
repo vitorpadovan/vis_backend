@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import org.springframework.core.env.Environment;
 
 @Configuration
@@ -42,6 +43,7 @@ public class SecutiryConfig extends WebSecurityConfigurerAdapter {
 		.anyRequest().authenticated() //Qualquer outra requisição deve ser validada pelo login
 		;
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //Assegura que a sessão não será armazenada
 	}
 	
