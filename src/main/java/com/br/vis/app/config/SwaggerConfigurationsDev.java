@@ -20,8 +20,11 @@ public class SwaggerConfigurationsDev {
 	@Bean
 	@Profile("dev")
 	public Docket forumApiDev() {
-		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
-				.paths(PathSelectors.any()).build()
+		return new Docket(DocumentationType.SWAGGER_2)
+				.select()
+				.apis(RequestHandlerSelectors.any())
+				.paths(PathSelectors.any())
+				.build()
 				.globalOperationParameters(
 						Arrays.asList(new ParameterBuilder().name("Authorization").description("Header para token JWT")
 								.modelRef(new ModelRef("string")).parameterType("header").required(false).build()));
