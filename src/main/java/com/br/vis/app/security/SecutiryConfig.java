@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -23,37 +24,45 @@ public class SecutiryConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
+
 	@Autowired
-    private Environment env;
-	
+	private Environment env;
+
 	@Autowired
 	private JWTUtil jwtUtil;
-	
+
 	private static final String[] ACESSOS_PUBLICOS = {};
 	private static final String[] ACESSOS_APENAS_GET = {};
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-	
+
+		http.formLogin().loginProcessingUrl("/api/login");
 		http.cors().and().csrf().disable();
-		http.authorizeRequests()
-		.antMatchers(ACESSOS_PUBLICOS).permitAll() //Libera todos os acessos público
-		.antMatchers(HttpMethod.GET, ACESSOS_APENAS_GET).permitAll() //Libera os acessos públicos
-		.anyRequest().authenticated() //Qualquer outra requisição deve ser validada pelo login
+		http.authorizeRequests().antMatchers(ACESSOS_PUBLICOS).permitAll() // Libera todos os acessos público
+				.antMatchers(HttpMethod.GET, ACESSOS_APENAS_GET).permitAll() // Libera os acessos públicos
+				.anyRequest().authenticated() // Qualquer outra requisição deve ser validada pelo login
 		;
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //Assegura que a sessão não será armazenada
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // Assegura que a sessão não
+																							// será armazenada
 	}
-	
+
+
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/**.html", "/v2/api-docs", "/webjars/**", "/configuration/**",
+				"/swagger-resources/**");
+	}
+
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
 		return source;
 	}
-	
+
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
