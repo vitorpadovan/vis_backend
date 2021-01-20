@@ -1,5 +1,5 @@
-# App VIS - API Java
-## Versão 0.0.2 - 16/01/2020
+http://localhost:8080/swagger-ui.html# App VIS - API Java
+## Versão 0.0.3 - 16/01/2020
 README.md criado em https://stackedit.io/
 Para alterações veja em CHANGLOG.md(Em construção)
 
@@ -31,4 +31,4 @@ Este modo possui algumas diferenças.
  3. Alguns endpoints extras.
 
 ## Documentação API
-Toda a documentação da API poderá ser encontrada em ...(Em desenvolvimento)
+Toda a documentação da API poderá ser encontrada em http://<IP_DA_MAQUINA>:8080/swagger-ui.html
