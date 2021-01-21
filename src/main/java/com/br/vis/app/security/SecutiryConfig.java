@@ -37,7 +37,7 @@ public class SecutiryConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.formLogin().loginProcessingUrl("/api/login");
+		
 		http.cors().and().csrf().disable();
 		http.authorizeRequests().antMatchers(ACESSOS_PUBLICOS).permitAll() // Libera todos os acessos público
 				.antMatchers(HttpMethod.GET, ACESSOS_APENAS_GET).permitAll() // Libera os acessos públicos
