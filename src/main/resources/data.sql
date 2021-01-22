@@ -10,6 +10,11 @@ INSERT INTO DireOper(direCodiDire,direNomeDire,direDescDire) VALUES
 (3,'ROLE_GERENTE','Gerente'),
 (4,'ROLE_OPERADOR','Operador');
 
+INSERT INTO CadaEmpr(emprCodiEmpr, emprDataCada, emprNomeEmpr)
+VALUES(1, '2021-01-22 15:12', 'Vitor EMP'),
+(2, '2021-01-22 15:12', 'Vini EMP'),
+(3, '2021-01-22 15:12', 'Outra EMP');
+
 INSERT INTO JTDireOper(operCodiOper,direCodiDire) VALUES
 (1,1),
 (1,2),
@@ -17,5 +22,17 @@ INSERT INTO JTDireOper(operCodiOper,direCodiDire) VALUES
 (1,4),
 (2,1),
 (3,2),
-(4,3)
-;
+(4,3);
+
+INSERT IGNORE INTO JTEmprOper(operCodiOper,emprCodiEmpr)
+VALUES
+(1,1),
+(1,2),
+(1,3),
+(2,1),
+(2,2),
+(2,3),
+(3,3),
+(4,3);
+
+

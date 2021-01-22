@@ -3,6 +3,7 @@ package com.br.vis.app.model;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -64,6 +65,10 @@ public class CadaOper implements UserDetails {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "JTDireOper", joinColumns = @JoinColumn(name = "operCodiOper"), inverseJoinColumns = @JoinColumn(name = "direCodiDire"))
 	private List<DireOper> direitos;
+	
+	@ManyToMany(fetch =  FetchType.EAGER)
+	@JoinTable(name = "JTEmprOper", joinColumns = @JoinColumn(name = "operCodiOper"), inverseJoinColumns = @JoinColumn(name = "emprCodiEmpr"))
+	private Set<CadaEmpr> empresas;
 
 	public CadaOper() {
 		super();
