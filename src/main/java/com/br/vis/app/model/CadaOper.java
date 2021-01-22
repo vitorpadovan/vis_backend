@@ -17,6 +17,7 @@ import javax.persistence.ManyToMany;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
 
 @Entity
@@ -41,12 +42,15 @@ public class CadaOper implements UserDetails {
 
 	@NotNull
 	@Column(name = "operDataCada", columnDefinition = "datetime not null comment 'Data de cadastro'")
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private Date operDataCada;
 
 	@Column(name = "operDataAtua", columnDefinition = "datetime  null comment 'Data Atualização'")
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private Date operDataAtua;
 
 	@Column(name = "operDataExpi", columnDefinition = "datetime  null comment 'Data expiração'")
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private Date operDataExpi;
 
 	@NotNull
@@ -56,11 +60,9 @@ public class CadaOper implements UserDetails {
 	@NotNull
 	@Column(name = "operOperBloq", columnDefinition = "boolean not null default false comment 'Operador bloqueado'")
 	private Boolean operOperBloq;
-	
+
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "JTDireOper",
-	joinColumns = @JoinColumn(name = "operCodiOper"),
-	inverseJoinColumns = @JoinColumn(name = "direCodiDire"))
+	@JoinTable(name = "JTDireOper", joinColumns = @JoinColumn(name = "operCodiOper"), inverseJoinColumns = @JoinColumn(name = "direCodiDire"))
 	private List<DireOper> direitos;
 
 	public CadaOper() {
@@ -151,6 +153,14 @@ public class CadaOper implements UserDetails {
 
 	public void setOperOperBloq(Boolean operOperBloq) {
 		this.operOperBloq = operOperBloq;
+	}
+
+	public List<DireOper> getDireitos() {
+		return direitos;
+	}
+
+	public void setDireitos(List<DireOper> direitos) {
+		this.direitos = direitos;
 	}
 
 	@Override
@@ -248,10 +258,10 @@ public class CadaOper implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		if(this.operDataExpi == null) {
+		if (this.operDataExpi == null) {
 			return true;
 		}
-		//TODO implementar regra correta para expirar o usuário
+		// TODO implementar regra correta para expirar o usuário
 		return true;
 	}
 
