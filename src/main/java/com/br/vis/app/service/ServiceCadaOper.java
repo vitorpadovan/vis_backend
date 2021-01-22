@@ -35,4 +35,12 @@ public class ServiceCadaOper implements UserDetailsService{
 			return null;
 		}
 	}
+	
+	public static CadaOper operadorAutenticado() {
+		try {
+			return (CadaOper) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		}catch(Exception ex) {
+			return null;
+		}
+	}
 }
