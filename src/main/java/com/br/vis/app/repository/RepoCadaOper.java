@@ -12,5 +12,7 @@ public interface RepoCadaOper extends JpaRepository<CadaOper, Integer> {
 	
 	@Query("SELECT co FROM CadaOper co where operLogiOper = :usuario")
 	public Optional<CadaOper> getUsuarioPorLogin(@Param("usuario") String usuario);
+	
+	public Optional<CadaOper> findByOperLogiOper(String usuario);
 
 }

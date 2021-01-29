@@ -64,9 +64,9 @@ public class CadaOper implements UserDetails {
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "JTDireOper", joinColumns = @JoinColumn(name = "operCodiOper"), inverseJoinColumns = @JoinColumn(name = "direCodiDire"))
-	private List<DireOper> direitos;
-	
-	@ManyToMany(fetch =  FetchType.EAGER)
+	private Set<DireOper> direitos;
+
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "JTEmprOper", joinColumns = @JoinColumn(name = "operCodiOper"), inverseJoinColumns = @JoinColumn(name = "emprCodiEmpr"))
 	private Set<CadaEmpr> empresas;
 
@@ -160,12 +160,20 @@ public class CadaOper implements UserDetails {
 		this.operOperBloq = operOperBloq;
 	}
 
-	public List<DireOper> getDireitos() {
+	public Set<DireOper> getDireitos() {
 		return direitos;
 	}
 
-	public void setDireitos(List<DireOper> direitos) {
+	public void setDireitos(Set<DireOper> direitos) {
 		this.direitos = direitos;
+	}
+
+	public Set<CadaEmpr> getEmpresas() {
+		return empresas;
+	}
+
+	public void setEmpresas(Set<CadaEmpr> empresas) {
+		this.empresas = empresas;
 	}
 
 	@Override

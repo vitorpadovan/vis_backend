@@ -16,6 +16,10 @@ public class CadaEmpr {
 	private String emprNomeEmpr;
 	private Date emprDataCada;
 
+	public CadaEmpr() {
+		super();
+	}
+
 	public CadaEmpr(int emprCodiEmpr, String emprNomeEmpr, Date emprDataCada) {
 		super();
 		this.emprCodiEmpr = emprCodiEmpr;

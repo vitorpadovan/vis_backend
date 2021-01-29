@@ -2,7 +2,11 @@ package com.br.vis.app.model.dto;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
+import com.br.vis.app.model.CadaEmpr;
 import com.br.vis.app.model.CadaOper;
 import com.br.vis.app.model.DireOper;
 
@@ -16,7 +20,8 @@ public class DtoCadaOper {
 	private Date operDataExpi;
 	private Boolean operOperAtiv;
 	private Boolean operOperBloq;
-	private List<DireOper> direitos;
+	private Set<DtoDireOper> direitos;
+	private Set<CadaEmpr> empresas;
 
 	public DtoCadaOper() {
 		super();
@@ -36,7 +41,7 @@ public class DtoCadaOper {
 	}
 
 	public DtoCadaOper(int operCodiOper, String operNomeOper, String operLogiOper, Date operDataCada, Date operDataAtua,
-			Date operDataExpi, Boolean operOperAtiv, Boolean operOperBloq, List<DireOper> direitos) {
+			Date operDataExpi, Boolean operOperAtiv, Boolean operOperBloq, Set<DtoDireOper> direitos) {
 		super();
 		this.operCodiOper = operCodiOper;
 		this.operNomeOper = operNomeOper;
@@ -113,19 +118,33 @@ public class DtoCadaOper {
 		this.operOperBloq = operOperBloq;
 	}
 
-	public List<DireOper> getDireitos() {
+	public Set<DtoDireOper> getDireitos() {
 		return direitos;
 	}
 
-	public void setDireitos(List<DireOper> direitos) {
+	public void setDireitos(Set<DtoDireOper> direitos) {
 		this.direitos = direitos;
+	}
+
+	public Set<CadaEmpr> getEmpresas() {
+		return empresas;
+	}
+
+	public void setEmpresas(Set<CadaEmpr> empresas) {
+		this.empresas = empresas;
+	}
+
+	@Override
+	public String toString() {
+		return "DtoCadaOper [operCodiOper=" + operCodiOper + ", operNomeOper=" + operNomeOper + ", operLogiOper="
+				+ operLogiOper + ", operDataCada=" + operDataCada + ", operDataAtua=" + operDataAtua + ", operDataExpi="
+				+ operDataExpi + ", operOperAtiv=" + operOperAtiv + ", operOperBloq=" + operOperBloq + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((direitos == null) ? 0 : direitos.hashCode());
 		result = prime * result + operCodiOper;
 		result = prime * result + ((operDataAtua == null) ? 0 : operDataAtua.hashCode());
 		result = prime * result + ((operDataCada == null) ? 0 : operDataCada.hashCode());
@@ -146,11 +165,6 @@ public class DtoCadaOper {
 		if (getClass() != obj.getClass())
 			return false;
 		DtoCadaOper other = (DtoCadaOper) obj;
-		if (direitos == null) {
-			if (other.direitos != null)
-				return false;
-		} else if (!direitos.equals(other.direitos))
-			return false;
 		if (operCodiOper != other.operCodiOper)
 			return false;
 		if (operDataAtua == null) {
@@ -191,14 +205,6 @@ public class DtoCadaOper {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "DtoCadaOper [operCodiOper=" + operCodiOper + ", operNomeOper=" + operNomeOper + ", operLogiOper="
-				+ operLogiOper + ", operDataCada=" + operDataCada + ", operDataAtua=" + operDataAtua + ", operDataExpi="
-				+ operDataExpi + ", operOperAtiv=" + operOperAtiv + ", operOperBloq=" + operOperBloq + ", direitos="
-				+ direitos + "]";
-	}
-
 	public void setDto(CadaOper operador) {
 		this.operCodiOper = operador.getOperCodiOper();
 		this.operNomeOper = operador.getOperNomeOper();
@@ -208,6 +214,7 @@ public class DtoCadaOper {
 		this.operDataExpi = operador.getOperDataExpi();
 		this.operOperAtiv = operador.getOperOperAtiv();
 		this.operOperBloq = operador.getOperOperBloq();
-		this.direitos = operador.getDireitos();
+		this.direitos = operador.getDireitos().stream().map(s-> new DtoDireOper(s.getDireCodiDire(),s.getDireDescDire())).collect(Collectors.toSet());
+		this.empresas = operador.getEmpresas();
 	}
 }
